@@ -29,7 +29,7 @@ public class MethodMappingTestController {
          * 설정된 데이터는 View(JSP 등)에서 ${key} 형태로 참조할 수 있다.
          */
         model.addAttribute("message", "신규 메뉴 등록용 핸들러 메소드 호출함...");
-        return "mappingResult"; // View 이름 (예: /WEB-INF/views/mappingResult.jsp)
+        return "mappingResult"; // View 이름
     }
 
     /**
