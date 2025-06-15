@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <!-- 정적 CSS 파일을 연결하는 링크 -->
+  <link rel="stylesheet" type="text/css" th:href="@{/css/common.css}"/>
+</head>
+<body>
+  <h1>표현식</h1>
+
+  <h2>주석</h2>
+  <!--
+      주석의 종류
+      1. parser-level 주석
+         - 작성 예: <!--/* 주석 내용 */-->
+  - Thymeleaf 파서에서 처리되어 HTML 결과물에는 나타나지 않음
+  - 클라이언트가 소스 보기로도 볼 수 없음 (HTML에 존재하지 않음)
+
+  2. prototype-level 주석
+  - 작성 예: <!--/*/ 주석 내용 /*/-->
+  - 정적 HTML에서는 보이지만, Thymeleaf가 처리된 후에는 실제 HTML에서도 주석으로 남음
+  - HTML 파일을 정적으로 열 때는 주석이 보이고, 서버에서는 정상 출력됨
+  -->
+
+  <ul>
+    <li>parser-level</li>
+    <!--/* 이 주석은 클라이언트에게 전달되지 않음 */-->
+
+    <li>prototype-level</li>
+    <!--/*/ 이 주석은 HTML 주석으로 출력됨 /*/-->
+  </ul>
+
+  <h2>표현식1 - 변수 표현식 ${...}</h2>
+  <!-- HTTP 요청 파라미터를 출력 -->
+  <p th:text="${param.title}">요청 파라미터 title</p>
+  <p th:text="${param.no[0]}">요청 파라미터 no의 첫 번째 값</p>
+  <p th:text="${param.no[1]}">요청 파라미터 no의 두 번째 값</p>
+
+  <h2>표현식2 - 메시지 표현식 #{...}</h2>
+  <!-- messages.properties 파일의 message.value 키를 불러옴 -->
+  <p th:text="#{message.value}">국제화 메시지 출력</p>
+
+  <h2>표현식3 - 링크 표현식 @{...}</h2>
+  <!-- context path를 포함한 링크 생성 -->
+  <a th:href="@{/}">메인으로</a>
+
+  <h2>표현식4 - 선택 변수 표현식 (*{...})</h2>
+  <!-- 일반적인 표현식: 객체.member.name 접근 -->
+  <p th:text="${member.name}">member 객체의 name 출력</p>
+
+  <!-- 선택 변수 표현식: th:object로 기준 객체를 지정하고, 내부에서는 *{속성명}으로 접근 -->
+  <div th:object="${member}">
+    <!-- 내부에서는 member가 this로 간주됨 -->
+    <p th:text="*{age}">나이</p>
+    <p th:text="*{gender}">성별</p>
+    <p th:text="*{address}">주소</p>
+  </div>
+
+
+  <h2>HTML 출력 th:text, th:utext, th:value</h2>
+  <ul>
+    <!-- th:text: HTML 태그를 이스케이프(문자 그대로 출력) -->
+    <li th:text="${ hello }"></li>
+    <!-- th:utext: HTML 태그를 실제 태그로 인식하고 출력 -->
+    <li th:utext="${ hello }"></li>
+    <!-- th:value: input 태그의 value 속성에 값을 설정 (화면에 표시됨) -->
+    <li><input type="text" th:value="타임리프"></li>
+  </ul>
+
+  <h2>리터럴 치환 (|...|)</h2>
+  <h3>'+' 없이 문자열 합치기</h3>
+  <!-- name='홍길동' 같은 문자열을 편리하게 출력 -->
+  <p th:object="${member}" th:text="|name='*{name}'|"></p>
+  <p th:object="${member}" th:text="|age='*{age}'|"></p>
+  <p th:object="${member}" th:text="|gender='*{gender}'|"></p>
+  <p th:object="${member}" th:text="|address='*{address}'|"></p>
+
+  <h2>th:block</h2>
+  <h3>
+    논리적인 블록을 만들고 싶을 때 사용.
+    불필요한 HTML 태그(div 등)를 생성하지 않으면서 조건문이나 반복문에 사용 가능
+  </h3>
+  <!-- th:block으로 감싸면 렌더링 결과에는 아무 태그도 남지 않음 -->
+  <th:block th:object="${member}">
+    <p th:text="*{age}">member의 나이 출력</p>
+  </th:block>
+
+</body>
+</html>

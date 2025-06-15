@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <h1 align="center">기타</h1>
+
+  <h2>th:with : 지역 변수를 지정해서 쓸 수 있다.</h2>
+  <th:block th:with="start = ${ selectCriteria.startPage }, last = ${ selectCriteria.endPage }">
+    <th:block th:each="p : ${ #numbers.sequence(start, last)}">
+      <th:block th:if="${ selectCriteria.pageNo eq p }">
+        <button th:text="${ p }" disabled></button>
+      </th:block>
+
+      <th:block th:if="${ selectCriteria.pageNo ne p }">
+        <button th:text="${ p }"></button>
+      </th:block>
+    </th:block>
+  </th:block>
+</body>
+</html>

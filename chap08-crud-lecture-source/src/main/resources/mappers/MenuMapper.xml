@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohgiraffers.crud.menu.model.dao.MenuMapper">
+  <resultMap id="menuResultMap" type="com.ohgiraffers.crud.menu.model.dto.MenuDTO">
+    <id property="code" column="MENU_CODE"/>
+    <result property="name" column="MENU_NAME"/>
+    <result property="price" column="MENU_PRICE"/>
+    <result property="categoryCode" column="CATEGORY_CODE"/>
+    <result property="orderableStatus" column="ORDERABLE_STATUS"/>
+  </resultMap>
+
+  <resultMap id="categoryResultMap" type="com.ohgiraffers.crud.menu.model.dto.CategoryDTO">
+    <id property="code" column="CATEGORY_CODE"/>
+    <result property="name" column="CATEGORY_NAME"/>
+    <result property="refCategoryCode" column="REF_CATEGORY_CODE"/>
+  </resultMap>
+
+  <select id="findAllMenu" resultMap="menuResultMap">
+    SELECT MENU_CODE
+    , MENU_NAME
+    , MENU_PRICE
+    , CATEGORY_CODE
+    , ORDERABLE_STATUS
+    FROM TBL_MENU
+    WHERE ORDERABLE_STATUS = 'Y'
+    ORDER BY MENU_CODE;
+  </select>
+
+  <select id="findAllCategory" resultMap="categoryResultMap">
+    SELECT CATEGORY_CODE
+    , CATEGORY_NAME
+    , REF_CATEGORY_CODE
+    FROM TBL_CATEGORY
+    ORDER BY CATEGORY_CODE;
+  </select>
+
+  <insert id="registNewMenu" parameterType="com.ohgiraffers.crud.menu.model.dto.MenuDTO">
+    INSERT INTO TBL_MENU
+    (
+    MENU_NAME
+    , MENU_PRICE
+    , CATEGORY_CODE
+    , ORDERABLE_STATUS
+    )
+    VALUES
+    (
+    #{name}
+    ,#{price}
+    ,#{categoryCode}
+    ,#{orderableStatus}
+    )
+  </insert>
+
+  <select id="findMenuByCode" parameterType="int" resultMap="menuResultMap">
+    SELECT MENU_CODE,
+    MENU_NAME,
+    MENU_PRICE,
+    CATEGORY_CODE,
+    ORDERABLE_STATUS
+    FROM TBL_MENU
+    WHERE MENU_CODE = #{code}
+  </select>
+
+  <update id="updateMenu" parameterType="com.ohgiraffers.crud.menu.model.dto.MenuDTO">
+    UPDATE TBL_MENU
+    SET
+    MENU_NAME = #{name},
+    MENU_PRICE = #{price},
+    CATEGORY_CODE = #{categoryCode},
+    ORDERABLE_STATUS = #{orderableStatus}
+    WHERE
+    MENU_CODE = #{code}
+  </update>
+
+  <delete id="deleteMenuByCode" parameterType="int">
+    DELETE FROM TBL_MENU
+    WHERE MENU_CODE = #{code}
+  </delete>
+
+
+</mapper>

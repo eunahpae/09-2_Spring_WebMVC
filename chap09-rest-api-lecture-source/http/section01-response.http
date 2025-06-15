@@ -1,0 +1,20 @@
+### hello world 문자열 응답
+GET http://localhost:8080/response/hello
+
+### 랜덤숫자 응답
+GET localhost:8080/response/random
+
+### Object 응답 (Message class)
+GET localhost:8080/response/message
+
+### List 응답
+GET localhost:8080/response/list
+
+### Map 응답
+GET localhost:8080/response/map
+
+### ImageFile 응답
+GET localhost:8080/response/image
+
+### ResponseEntity 응답
+GET localhost:8080/response/entity

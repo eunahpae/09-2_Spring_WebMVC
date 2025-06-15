@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>메뉴 상세</title>
+</head>
+<body>
+  <div th:replace="common/header.html"/>
+  <div align="center">
+    <h2>메뉴 상세 정보</h2>
+    <table border="1" align="center">
+      <tr>
+        <th>메뉴번호</th>
+        <td th:text="${menu.code}"></td>
+      </tr>
+      <tr>
+        <th>메뉴이름</th>
+        <td th:text="${menu.name}"></td>
+      </tr>
+      <tr>
+        <th>메뉴가격</th>
+        <td th:text="${menu.price}"></td>
+      </tr>
+      <tr>
+        <th>카테고리</th>
+        <td th:switch="${menu.categoryCode}">
+          <span th:case="'1'">식사</span>
+          <span th:case="'2'">음료</span>
+          <span th:case="'3'">디저트</span>
+          <span th:case="'4'">한식</span>
+          <span th:case="'5'">중식</span>
+          <span th:case="'6'">일식</span>
+          <span th:case="'7'">퓨전</span>
+          <span th:case="'8'">커파</span>
+          <span th:case="'9'">쥬스</span>
+          <span th:case="'10'">기타</span>
+          <span th:case="'11'">동양</span>
+          <span th:case="'12'">서양</span>
+          <span th:case="*">잘못된값</span>
+        </td>
+      </tr>
+      <tr>
+        <th>판매상태</th>
+        <td th:text="${menu.orderableStatus}"></td>
+      </tr>
+    </table>
+
+    <br>
+    <button onclick="location.href='/menu/list'">목록으로</button>
+    <button>
+      <a th:href="@{/menu/edit/{code}(code=${menu.code})}">수정</a>
+    </button>
+
+    <button>
+      <a th:href="@{/menu/delete/{code}(code=${menu.code})}">
+        삭제
+      </a>
+    </button>
+  </div>
+
+</body>
+</html>

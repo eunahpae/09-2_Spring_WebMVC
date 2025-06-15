@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+  <h1 align="center">제어문</h1>
+
+  <h2>th:if, th:unless</h2>
+  <!-- num이 0보다 크면 해당 문장 출력 -->
+  <p th:if="${num>0}">넘어온 값은 0보다 크다</p>
+  <!-- num이 0보다 작으면 해당 문장 출력 -->
+  <p th:if="${num<0}">넘어온 값은 0보다 작다</p>
+  <!-- num이 0보다 작지 않으면(즉, 크거나 같으면) 출력 -->
+  <p th:unless="${num<0}">넘어온 값은 0보다 크다</p>
+  <!-- str이 '사과'일 때만 아래 블록이 출력됨 -->
+  <th:block th:if="${str =='사과'}">
+    <p>사과입니다.</p>
+  </th:block>
+  <!-- str이 '바나나'일 때만 아래 블록이 출력됨 -->
+  <th:block th:if="${str =='바나나'}">
+    <p>바나나입니다.</p>
+  </th:block>
+
+  <!-- and나 or를 사용해서 다중 조건 처리도 가능하다. -->
+  <!-- num이 0보다 크거나 num이 10 이하일 경우 출력됨 -->
+  <p th:if="${num >0 or num<=10}">1부터 10까지의 양수</p>
+  <!-- str이 null이 아니고, 값이 '바나나'일 때만 출력 -->
+  <p th:if="${str !=null and str=='바나나'}">바나나입니다.</p>
+  <!-- 문자열이 비어 있지 않고 값이 '바나나'일 때만 출력 -->
+  <!-- #strings.isEmpty()는 문자열이 null 또는 빈 문자열("")인지 확인 -->
+  <p th:if="${!#strings.isEmpty(str) and str == '바나나'}">진짜 바나나입니다.</p>
+
+  <!--
+    타임리프에서 기본적으로 제공되는 Utility Objects 의 기능들을 통해
+    값을 손쉽게 원하는 형태로 처리할 수 있다.
+
+    - Strings : 문자열 관련 유틸리티 기능 제공 (#strings)
+      예) isEmpty(), contains(), startsWith(), substring() 등
+    - Numbers : 숫자 포맷 처리 및 수열 생성 (#numbers)
+    - Objects : 객체 관련 유틸리티 (#objects)
+      예) null 체크, 디폴트 값 설정 등
+    - Arrays : 배열 관련 처리 유틸리티 (#arrays)
+    - Lists : 리스트 관련 처리 유틸리티 (#lists)
+    - Maps : 맵 관련 처리 유틸리티 (#maps)
+    - Messages : 국제화 메시지 처리 유틸리티 (#messages)
+    - Dates / Calendars : 날짜/시간 관련 포맷 및 비교 (#dates, #calendars)
+  -->
+
+  <h2>th:switch, th:case</h2>
+  <h3>th:switch와 th:case를 통해 해당 조건의 값이 어떤 case에 해당되는지에 따라 태그를 선택할 수 있다.</h3>
+  <!-- str 변수의 값에 따라 해당 case가 일치하는 블록만 출력됨 -->
+  <th:block th:switch="${str}">
+    <span th:case="사과">사과가 선택되었습니다.</span>
+    <span th:case="바나나">바나나가 선택되었습니다.</span>
+    <!-- 기본값을 표현하려면 th:case="*"> 사용 가능 -->
+  </th:block>
+
+  <h2>th:each(반복문)를 통해 태그들을 반복할 수 있다.</h2>
+  <table border="1">
+    <tr>
+      <th>이름</th>
+      <th>나이</th>
+      <th>성별</th>
+      <th>주소</th>
+    </tr>
+    <!-- memberList의 각 요소(member)를 한 행(row)으로 출력 -->
+    <!-- member.name, member.age 등은 member 객체의 속성 -->
+    <tr th:each="member : ${memberList}">
+      <td th:text="${member.name}"></td>
+      <td th:text="${member.age}"></td>
+      <td th:text="${member.gender}"></td>
+      <td th:text="${member.address}"></td>
+    </tr>
+  </table>
+
+  <h3>#numbers Utility Object를 이용하여 반복문 작성하기</h3>
+  <!-- 5부터 10까지의 숫자를 반복 출력 -->
+  <!-- th:each 내부에서 상태 객체(numStat)를 사용할 수 있음 -->
+  <!-- numStat.count: 현재 반복 횟수(1부터 시작), numStat.index: 0부터 시작하는 인덱스 -->
+  <th:block th:each="num, numStat : ${#numbers.sequence(5,10)}">
+    <!-- 각 숫자에 따라 동적으로 링크 생성 -->
+    <!-- @{|/numbering/${numStat.count}|}은 URL 경로를 구성하는 표현식 -->
+    <a th:href="@{|/numbering/${numStat.count}|}" th:text="|번호 + ${num}|"></a><br>
+  </th:block>
+
+</body>
+</html>

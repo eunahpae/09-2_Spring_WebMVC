@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script>
+    const successMessage = `[[${successMessage}]]`;
+    if (successMessage) {
+      alert(successMessage)
+    }
+  </script>
+</head>
+<body>
+  <div th:replace="common/header.html"/>
+  <table align="center" border="1">
+    <tr>
+      <th>메뉴번호</th>
+      <th>메뉴이룸</th>
+      <th>메뉴가격</th>
+      <th>카테고리코드</th>
+      <th>판메상태</th>
+    </tr>
+    <tr th:each="menu : ${menuList}">
+      <td>
+        <a th:href="@{/menu/detail/{code}(code=${menu.code})}"
+           th:text="${menu.code}"></a>
+      </td>
+      <td th:text="${menu.name}"></td>
+      <td th:text="${menu.price}"></td>
+      <td th:text="${menu.categoryCode}"></td>
+      <td th:text="${menu.orderableStatus}"></td>
+    </tr>
+  </table>
+  <br>
+
+  <div align="center">
+    <button onclick="location.href='/menu/regist'">신규 메뉴 등록</button>
+  </div>
+</body>
+</html>

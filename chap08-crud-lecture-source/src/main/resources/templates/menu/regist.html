@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div th:include="common/header.html"/>
+  <div align="center">
+
+    <h3>신규 메뉴 등록</h3>
+    <form action="/menu/regist" method="post">
+      <label>메뉴 이름 : </label><input type="text" name="name"><br>
+      <label>메뉴 가격 : </label><input type="number" name="price"><br>
+      <label>카테고리 코드 :</label>
+      <select name="categoryCode" id="categoryCode"></select><br>
+      <label>판매 상태 : </label>
+      <select name="orderableStatus" id="orderableStatus">
+        <option value="Y">Y</option>
+        <option value="N">N</option>
+      </select><br>
+      <input type="submit" value="등록">
+    </form>
+
+    <script>
+      fetch("/menu/category")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        const $categoryCode = document.getElementById("categoryCode");
+        for (let index in data) {
+          const $option = document.createElement('option');
+          $option.value = data[index].code;
+          $option.textContent = data[index].name;
+          $categoryCode.appendChild($option);
+        }
+      })
+    </script>
+
+  </div>
+
+</body>
+</html>

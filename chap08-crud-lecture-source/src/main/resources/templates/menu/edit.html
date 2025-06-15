@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>메뉴 수정</title>
+</head>
+<body>
+  <div align="center">
+
+    <h2>메뉴 수정</h2>
+    <form action="/menu/edit" method="post">
+      <input type="hidden" name="code" th:value="${menu.code}"/>
+      <label>이름: <input type="text" name="name" th:value="${menu.name}"/></label><br>
+      <label>가격: <input type="number" name="price" th:value="${menu.price}"/></label><br>
+      <label>카테고리:
+        <select name="categoryCode" id="categoryCode">
+          <option th:each="category : ${categoryList}"
+                  th:value="${category.code}"
+                  th:text="${category.name}"
+                  th:selected="${category.code == menu.categoryCode}">
+          </option>
+        </select>
+      </label><br>
+      <label>판매상태:
+        <select name="orderableStatus">
+          <option value="Y" th:selected="${menu.orderableStatus == 'Y'}">Y</option>
+          <option value="N" th:selected="${menu.orderableStatus == 'N'}">N</option>
+        </select>
+      </label><br><br>
+      <button type="submit">저장</button>
+    </form>
+
+    <script th:inline="javascript">
+
+      const selectedCategoryCode = /*[['${menu.categoryCode}']]*/ 'defaultCode';
+      console.log("selectedCategoryCode:", selectedCategoryCode);
+
+      fetch("/menu/category")
+      .then(res => res.json())
+      .then(data => {
+        const $categoryCode = document.getElementById("categoryCode");
+        $categoryCode.innerHTML = ''; // 기존 옵션 제거
+
+        data.forEach(category => {
+          const $option = document.createElement('option');
+          $option.value = category.code;
+          $option.textContent = category.name;
+
+          if (category.code === selectedCategoryCode) {
+            $option.selected = true;
+          }
+
+          $categoryCode.appendChild($option);
+        });
+      });
+    </script>
+  </div>
+</body>
+</html>

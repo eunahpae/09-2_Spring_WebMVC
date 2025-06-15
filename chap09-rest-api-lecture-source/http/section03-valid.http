@@ -1,0 +1,14 @@
+### 회원 정보 조회
+GET http://localhost:8080/valid/users/4
+
+
+### 회원 정보 등록
+POST http://localhost:8080/valid/users
+Content-Type: application/json
+
+{
+  "id" : "id",
+  "pwd" : "passTest",
+  "name": "코알라",
+  "enrollDate": "2025-06-12"
+}
